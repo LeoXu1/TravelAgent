@@ -1,20 +1,14 @@
-from google.adk.agents import LlmAgent 
+from google.adk.agents import Agent 
 
-# Define a tool function
-def get_capital_city(country: str) -> str:
-  """Retrieves the capital city for a given country."""
-  # Replace with actual logic (e.g., API call, database lookup)
-  capitals = {"france": "Paris", "japan": "Tokyo", "canada": "Ottawa"}
-  return capitals.get(country.lower(), f"Sorry, I don't know the capital of {country}.")
-
-# Add the tool to the agent
-capital_agent = LlmAgent(
+guide_agent = Agent(
     model="gemini-2.0-flash",
-    name="capital_agent", #name of your agent
-    description="Answers user questions about the capital city of a given country.",
-    instruction="""You are an agent that provides the capital city of a country... (previous instruction text)""",
-    tools=[get_capital_city] # Provide the function directly
+    name="plan_agent", #name of your agent
+    description="Plans a trip",
+    instruction="""You are a travel agent. The user will provide information about their desired vacation.
+    The minimum information to start the planning process is an origin, a destination, a trip length, and a budget.
+    The user may either provide a start and end date or say that their dates are flexible.
+    Ask the user for any missing information. When all information is received, thank the user."""
 )
 
 # ADK will discover the root_agent instance
-root_agent = capital_agent
+root_agent = guide_agent
